@@ -25,6 +25,7 @@ class Identifier:
         self.image = identifier['image']
         try:
             self.confirmed_identifier = identifier['confirmed_identifier']
+
         except KeyError:
             self.confirmed_identifier = None
 

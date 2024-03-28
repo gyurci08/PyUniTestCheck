@@ -1,6 +1,5 @@
+import tkinter
 import customtkinter
-
-from main import ExamList, Exam
 
 customtkinter.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
@@ -75,7 +74,7 @@ class App(customtkinter.CTk):
         self.fr_nav.grid(row=4, column=0, columnspan=4)
         self.bt_prev = customtkinter.CTkButton(self.fr_nav, text="Prev", command=self.prev_exam)
         self.bt_prev.grid(column=0, row=0, padx=self.la_padx, pady=self.la_pady)
-        self.bt_search = customtkinter.CTkButton(self.fr_nav, text="Search", command=lambda: self.search_exam(self.tb_search.get()))
+        self.bt_search = customtkinter.CTkButton(self.fr_nav, text="Search", command=self.search_exam)
         self.bt_search.grid(column=1, row=0, padx=self.la_padx, pady=self.la_pady)
         self.bt_confirm = customtkinter.CTkButton(self.fr_nav, text="Confirm", command=self.confirm_exam)
         self.bt_confirm.grid(column=2, row=0, padx=self.la_padx, pady=self.la_pady)
@@ -84,15 +83,33 @@ class App(customtkinter.CTk):
 
         self.refresh()
 
-    def confirm_exam(self):
-        
-        pass
+    def compareConfirmed(self, orig, confirmed):
+        if confirmed is not None:
+            return confirmed
+        else:
+            return orig
 
-    def search_exam(self, id):
+    def confirm_exam(self):
+        if not len(self.tb_conf_id_value.get()) < 1:
+            self.exams[self.curr_exam].identifier.confirmed_identifier = self.tb_conf_id_value.get()
+        if not len(self.tb_conf_results_id_value.get()) < 1:
+            self.exams[self.curr_exam].result.confirmed = self.tb_conf_results_id_value.get()
+
+        self.refresh()
+
+    def search_exam(self):
+        isFound = False
         for i in range(len(self.exams)):
-            if self.exams[i].identifier.original == id:
+            id = self.compareConfirmed(self.exams[i].identifier.original,
+                                       self.exams[i].identifier.confirmed_identifier)
+
+            if id == self.tb_search.get():
                 self.curr_exam = i
                 self.refresh()
+                isFound = True
+        if isFound == False:
+            dialog =  tkinter.messagebox.showinfo(title="Search ID", message="ID not found!")
+
     def prev_exam(self):
         if not self.curr_exam == 0:
             self.curr_exam -= 1
@@ -105,8 +122,12 @@ class App(customtkinter.CTk):
             self.refresh()
 
     def refresh(self):
-        self.la_id_value.configure(text=self.exams[self.curr_exam].identifier.original)
-        self.la_results_value.configure(text=self.exams[self.curr_exam].result.original)
+        id = self.compareConfirmed(self.exams[self.curr_exam].identifier.original,
+                              self.exams[self.curr_exam].identifier.confirmed_identifier)
+        results = self.compareConfirmed(self.exams[self.curr_exam].result.original,
+                                        self.exams[self.curr_exam].result.confirmed)
+        self.la_id_value.configure(text=id)
+        self.la_results_value.configure(text=results)
 
 
 
