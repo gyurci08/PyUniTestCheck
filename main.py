@@ -83,7 +83,7 @@ class ExamList:
 
 def loadExams():
     test2_json = dict
-    with open("exam_data.json", "r") as file:
+    with open("Data/exam_data.json", "r") as file:
         json_data = json.load(file)
         file.close()
     exams = ExamList(json_data)
@@ -91,7 +91,7 @@ def loadExams():
     return exams
 
 def exportExams(exams):
-    with open("exam_export.json", "w") as file:
+    with open("Data/exam_data.json", "w") as file:
         json.dump(exams.serialize(), file)
         file.close()
 

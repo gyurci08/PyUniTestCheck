@@ -93,7 +93,7 @@ class App(customtkinter.CTk):
 
     def confirm_exam(self):
         if not len(self.tb_conf_id_value.get()) < 1:
-            self.exams[self.curr_exam].identifier.confirmed_identifier = self.tb_conf_id_value.get()
+            self.exams[self.curr_exam].identifier.confirmed_identifier = self.tb_conf_id_value.get().upper()
         if not len(self.tb_conf_results_id_value.get()) < 1:
             try:
                 self.exams[self.curr_exam].result.confirmed =[int (result) for result in self.tb_conf_results_id_value.get().split(",")]
@@ -102,18 +102,20 @@ class App(customtkinter.CTk):
         self.refresh()
 
     def search_exam(self):
-        isFound = False
-        for i in range(len(self.exams)):
-            id = self.compareConfirmed(self.exams[i].identifier.original,
-                                       self.exams[i].identifier.confirmed_identifier)
+        if not len(self.tb_search.get()) < 1:
+            isFound = False
+            for i in range(len(self.exams)):
+                id = self.compareConfirmed(self.exams[i].identifier.original,
+                                           self.exams[i].identifier.confirmed_identifier)
 
-            if id == self.tb_search.get():
-                self.curr_exam = i
-                self.refresh()
-                isFound = True
-        if isFound == False:
-            dialog =  tkinter.messagebox.showinfo(title="Search ID", message="ID not found!")
-
+                if id == self.tb_search.get().upper():
+                    self.curr_exam = i
+                    self.refresh()
+                    isFound = True
+            if isFound == False:
+                dialog =  tkinter.messagebox.showinfo(title="Search ID", message="ID not found!")
+        else:
+            dialog = tkinter.messagebox.showerror(title="Error", message="Prompt in an ID!")
     def prev_exam(self):
         if not self.curr_exam == 0:
             self.curr_exam -= 1
@@ -130,9 +132,19 @@ class App(customtkinter.CTk):
                               self.exams[self.curr_exam].identifier.confirmed_identifier)
         results = self.compareConfirmed(self.exams[self.curr_exam].result.original,
                                         self.exams[self.curr_exam].result.confirmed)
+
+        results_str = ""
+        for result in results:
+            results_str += str(result)+","
+        results_str = results_str[:-1]
+
         self.la_id_value.configure(text=id)
         self.la_results_value.configure(text=results)
 
+        self.tb_conf_id_value.delete(0,100)
+        self.tb_conf_id_value.configure(placeholder_text=id)
 
+        self.tb_conf_results_id_value.delete(0, 100)
+        self.tb_conf_results_id_value.configure(placeholder_text=results_str)
 
 
