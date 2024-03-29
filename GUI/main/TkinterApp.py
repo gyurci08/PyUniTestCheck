@@ -10,7 +10,7 @@ customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "gre
 
 
 class App(customtkinter.CTk):
-    def __init__(self, list):
+    def __init__(self, exams):
         super().__init__()
 
         # configure window
@@ -23,7 +23,7 @@ class App(customtkinter.CTk):
 
 
         self.curr_exam = 0
-        self.exams = list.list
+        self.exams = exams.list
 
 
         # configure grid layout
