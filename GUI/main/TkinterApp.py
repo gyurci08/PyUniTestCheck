@@ -16,7 +16,7 @@ class App(customtkinter.CTk):
         # configure window
         self.title("PythonHomework")
         self.geometry(f"{850}x{550}")
-
+        self.resizable(False, False)
 
         self.la_padx = 10
         self.la_pady = 10
@@ -35,7 +35,7 @@ class App(customtkinter.CTk):
 
         # create id frame with widgets
         self.fr_id = customtkinter.CTkFrame(self, corner_radius=0,)
-        self.fr_id.grid(row=0, column=0, columnspan=1)
+        self.fr_id.grid(row=0, column=0, columnspan=1, padx=0)
 
         self.la_id = customtkinter.CTkLabel(self.fr_id, text="ID: ", width=10, justify="left")
         self.la_id.grid(column=0, row=0, padx=self.la_padx, pady=self.la_pady)
@@ -50,7 +50,7 @@ class App(customtkinter.CTk):
 
         # create id image frame with widgets
         self.fr_id_img = customtkinter.CTkFrame(self, corner_radius=0, width=300, height=300)
-        self.fr_id_img.grid(row=0, column=1, columnspan=2)
+        self.fr_id_img.grid(row=0, column=1, columnspan=2, padx=15)
 
         self.la_id_img = customtkinter.CTkLabel(self.fr_id_img, image=None)
         self.la_id_img.grid(column=0, row=0, padx=self.la_padx, pady=self.la_pady)
