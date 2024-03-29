@@ -97,6 +97,7 @@ def exportExams(exams):
 
 def start():
     exams = loadExams()
+    print(exams)
 
     gui = TkinterApp.App(exams)
     gui.mainloop()

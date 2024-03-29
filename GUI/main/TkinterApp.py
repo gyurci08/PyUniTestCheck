@@ -1,6 +1,8 @@
 import tkinter
 import customtkinter
+import PIL
 
+from PIL import ImageTk, Image
 from tkinter import messagebox
 
 customtkinter.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
@@ -13,7 +15,8 @@ class App(customtkinter.CTk):
 
         # configure window
         self.title("PythonHomework")
-        self.geometry(f"{860}x{600}")
+        self.geometry(f"{850}x{550}")
+
 
         self.la_padx = 10
         self.la_pady = 10
@@ -27,6 +30,9 @@ class App(customtkinter.CTk):
         self.grid_columnconfigure((0, 1, 2), weight=1)
         self.grid_rowconfigure((0, 1, 2), weight=1)
 
+
+
+
         # create id frame with widgets
         self.fr_id = customtkinter.CTkFrame(self, corner_radius=0,)
         self.fr_id.grid(row=0, column=0, columnspan=2)
@@ -39,28 +45,29 @@ class App(customtkinter.CTk):
         self.tb_conf_id_value = customtkinter.CTkEntry(self.fr_id)
         self.tb_conf_id_value.grid(column=1, row=1, padx=self.la_padx, pady=self.la_pady)
 
+
+
         # create id image frame with widgets
         self.fr_id_img = customtkinter.CTkFrame(self, corner_radius=0, width=300, height=300)
         self.fr_id_img.grid(row=0, column=1, columnspan=4)
-        self.la_id_img = customtkinter.CTkLabel(self.fr_id_img, text="IMG")
+        self.la_id_img = customtkinter.CTkLabel(self.fr_id_img, image=None)
         self.la_id_img.grid(column=0, row=0, padx=self.la_padx, pady=self.la_pady)
 
         # create results frame with widgets
-        self.fr_results = customtkinter.CTkFrame(self, corner_radius=0)
-        self.fr_results.grid(row=1, column=0, columnspan=2)
-        self.la_results = customtkinter.CTkLabel(self.fr_results, text="Results: ")
-        self.la_results.grid(column=0, row=0, padx=self.la_padx, pady=self.la_pady)
-        self.la_results_value = customtkinter.CTkLabel(self.fr_results, text="TODO")
-        self.la_results_value.grid(column=1, row=0, padx=self.la_padx, pady=self.la_pady)
-        self.la_conf_results_id = customtkinter.CTkLabel(self.fr_results, text="Confirmed Results: ")
-        self.la_conf_results_id.grid(column=0, row=1, padx=self.la_padx, pady=self.la_pady)
-        self.tb_conf_results_id_value = customtkinter.CTkEntry(self.fr_results)
-        self.tb_conf_results_id_value.grid(column=1, row=1, padx=self.la_padx, pady=self.la_pady)
+        self.la_results = customtkinter.CTkLabel(self.fr_id, text="Results: ")
+        self.la_results.grid(column=0, row=2, padx=self.la_padx, pady=self.la_pady)
+        self.la_results_value = customtkinter.CTkLabel(self.fr_id, text="TODO")
+        self.la_results_value.grid(column=1, row=2, padx=self.la_padx, pady=self.la_pady)
+        self.la_conf_results_id = customtkinter.CTkLabel(self.fr_id, text="Confirmed Results: ")
+        self.la_conf_results_id.grid(column=0, row=3, padx=self.la_padx, pady=self.la_pady)
+        self.tb_conf_results_id_value = customtkinter.CTkEntry(self.fr_id)
+        self.tb_conf_results_id_value.grid(column=1, row=3, padx=self.la_padx, pady=self.la_pady)
+
 
         # create id image frame with widgets
-        self.fr_results_img = customtkinter.CTkFrame(self, corner_radius=0, width=300, height=300)
-        self.fr_results_img.grid(row=2, column=0, columnspan=4)
-        self.la_results_img = customtkinter.CTkLabel(self.fr_results_img, text="IMG")
+        self.fr_results_img = customtkinter.CTkFrame(self, corner_radius=0, width=500, height=300)
+        self.fr_results_img.grid(row=1, column=0, columnspan=6)
+        self.la_results_img = customtkinter.CTkLabel(self.fr_results_img, image=None)
         self.la_results_img.grid(column=0, row=0, padx=self.la_padx, pady=self.la_pady)
 
 
@@ -147,4 +154,12 @@ class App(customtkinter.CTk):
         self.tb_conf_results_id_value.delete(0, 100)
         self.tb_conf_results_id_value.configure(placeholder_text=results_str)
 
+        try:
+            img_id = customtkinter.CTkImage(light_image=Image.open(f"Data/{self.exams[self.curr_exam].identifier.image}"), size=(250, 150))
+            img_res = customtkinter.CTkImage(light_image=Image.open(f"Data/{self.exams[self.curr_exam].result.image}"), size=(650, 150))
 
+            self.la_id_img.configure(text="", image=img_id, height=150, width=250)
+            self.la_results_img.configure(text="", image=img_res, height=150, width=650)
+        except FileNotFoundError:
+            self.la_id_img.configure(text="Image not found!", image="")
+            self.la_results_img.configure(text="Image not found!", image="")
