@@ -173,5 +173,5 @@ class App(customtkinter.CTk):
             self.la_id_img.configure(text="", image=img_id, height=img_id_height, width=img_id_width)
             self.la_results_img.configure(text="", image=img_res, height=img_res_height, width=img_res_width)
         except FileNotFoundError:
-            self.la_id_img.configure(text="Image not found!", image="") # Setting image to None cause error in tkinter :(
-            self.la_results_img.configure(text="Image not found!", image="")
+                self.la_id_img.configure(text="Image not found!", image="")         # Setting image to None cause error in tkinter :(
+                self.la_results_img.configure(text="Image not found!", image="")
