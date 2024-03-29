@@ -35,7 +35,8 @@ class App(customtkinter.CTk):
 
         # create id frame with widgets
         self.fr_id = customtkinter.CTkFrame(self, corner_radius=0,)
-        self.fr_id.grid(row=0, column=0, columnspan=2)
+        self.fr_id.grid(row=0, column=0, columnspan=1)
+
         self.la_id = customtkinter.CTkLabel(self.fr_id, text="ID: ", width=10, justify="left")
         self.la_id.grid(column=0, row=0, padx=self.la_padx, pady=self.la_pady)
         self.la_id_value = customtkinter.CTkLabel(self.fr_id, text="TODO", justify="left")
@@ -49,13 +50,15 @@ class App(customtkinter.CTk):
 
         # create id image frame with widgets
         self.fr_id_img = customtkinter.CTkFrame(self, corner_radius=0, width=300, height=300)
-        self.fr_id_img.grid(row=0, column=1, columnspan=4)
+        self.fr_id_img.grid(row=0, column=1, columnspan=2)
+
         self.la_id_img = customtkinter.CTkLabel(self.fr_id_img, image=None)
         self.la_id_img.grid(column=0, row=0, padx=self.la_padx, pady=self.la_pady)
 
         # create results frame with widgets
         self.la_results = customtkinter.CTkLabel(self.fr_id, text="Results: ")
         self.la_results.grid(column=0, row=2, padx=self.la_padx, pady=self.la_pady)
+
         self.la_results_value = customtkinter.CTkLabel(self.fr_id, text="TODO")
         self.la_results_value.grid(column=1, row=2, padx=self.la_padx, pady=self.la_pady)
         self.la_conf_results_id = customtkinter.CTkLabel(self.fr_id, text="Confirmed Results: ")
@@ -66,21 +69,24 @@ class App(customtkinter.CTk):
 
         # create id image frame with widgets
         self.fr_results_img = customtkinter.CTkFrame(self, corner_radius=0, width=500, height=300)
-        self.fr_results_img.grid(row=1, column=0, columnspan=6)
+        self.fr_results_img.grid(column=0, row=1,  columnspan=3)
+
         self.la_results_img = customtkinter.CTkLabel(self.fr_results_img, image=None)
         self.la_results_img.grid(column=0, row=0, padx=self.la_padx, pady=self.la_pady)
 
 
         #
         self.fr_search = customtkinter.CTkFrame(self, corner_radius=0)
-        self.fr_search.grid(row=3, column=0, columnspan=4)
+        self.fr_search.grid(column=0, row=2,  columnspan=3)
+
         self.la_search = customtkinter.CTkLabel(self.fr_search, text="Search (ID): ")
         self.la_search.grid(column=0, row=0, padx=self.la_padx, pady=self.la_pady)
         self.tb_search = customtkinter.CTkEntry(self.fr_search)
         self.tb_search.grid(column=1, row=0, padx=self.la_padx, pady=self.la_pady)
         #
         self.fr_nav = customtkinter.CTkFrame(self, corner_radius=0)
-        self.fr_nav.grid(row=4, column=0, columnspan=4)
+        self.fr_nav.grid(row=3, column=0, columnspan=3)
+
         self.bt_prev = customtkinter.CTkButton(self.fr_nav, text="Prev", command=self.prev_exam)
         self.bt_prev.grid(column=0, row=0, padx=self.la_padx, pady=self.la_pady)
         self.bt_search = customtkinter.CTkButton(self.fr_nav, text="Search", command=self.search_exam)
@@ -154,12 +160,18 @@ class App(customtkinter.CTk):
         self.tb_conf_results_id_value.delete(0, 100)
         self.tb_conf_results_id_value.configure(placeholder_text=results_str)
 
-        try:
-            img_id = customtkinter.CTkImage(light_image=Image.open(f"Data/{self.exams[self.curr_exam].identifier.image}"), size=(250, 150))
-            img_res = customtkinter.CTkImage(light_image=Image.open(f"Data/{self.exams[self.curr_exam].result.image}"), size=(650, 150))
+        img_id_width = 350
+        img_id_height = 150
+        img_res_width = 750
+        img_res_height = 150
 
-            self.la_id_img.configure(text="", image=img_id, height=150, width=250)
-            self.la_results_img.configure(text="", image=img_res, height=150, width=650)
+
+        try:
+            img_id = customtkinter.CTkImage(light_image=Image.open(f"Data/{self.exams[self.curr_exam].identifier.image}"), size=(img_id_width, img_id_height))
+            img_res = customtkinter.CTkImage(light_image=Image.open(f"Data/{self.exams[self.curr_exam].result.image}"), size=(img_res_width, img_res_height))
+
+            self.la_id_img.configure(text="", image=img_id, height=img_id_height, width=img_id_width)
+            self.la_results_img.configure(text="", image=img_res, height=img_res_height, width=img_res_width)
         except FileNotFoundError:
-            self.la_id_img.configure(text="Image not found!", image="")
+            self.la_id_img.configure(text="Image not found!", image="") # Setting image to None cause error in tkinter :(
             self.la_results_img.configure(text="Image not found!", image="")

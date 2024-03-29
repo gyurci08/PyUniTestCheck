@@ -91,9 +91,14 @@ def loadExams():
     return exams
 
 def exportExams(exams):
-    with open("Data/exam_data.json", "w") as file:
-        json.dump(exams.serialize(), file)
-        file.close()
+    try:
+        with open("Data/exam_data.json", "w") as file:
+            json.dump(exams.serialize(), file)
+            file.close()
+        print("File saved.")
+    except Exception as e:
+        print(f"Error durring save: {e}")
+
 
 def start():
     exams = loadExams()
@@ -102,11 +107,10 @@ def start():
     gui = TkinterApp.App(exams)
     gui.mainloop()
 
-    try:
-        exportExams(exams)
-        print("File saved.")
-    except:
-        pass
+    exportExams(exams)
+
+
+
 
 if __name__ == '__main__':
     start()
