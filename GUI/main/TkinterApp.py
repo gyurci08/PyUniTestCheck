@@ -1,6 +1,8 @@
 import tkinter
 import customtkinter
 
+from tkinter import messagebox
+
 customtkinter.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
 
@@ -93,8 +95,10 @@ class App(customtkinter.CTk):
         if not len(self.tb_conf_id_value.get()) < 1:
             self.exams[self.curr_exam].identifier.confirmed_identifier = self.tb_conf_id_value.get()
         if not len(self.tb_conf_results_id_value.get()) < 1:
-            self.exams[self.curr_exam].result.confirmed = self.tb_conf_results_id_value.get()
-
+            try:
+                self.exams[self.curr_exam].result.confirmed =[int (result) for result in self.tb_conf_results_id_value.get().split(",")]
+            except ValueError:
+                dialog =  tkinter.messagebox.showerror(title="Error", message=r"You are using invalid separator! Try: , (comma)")
         self.refresh()
 
     def search_exam(self):
@@ -129,8 +133,8 @@ class App(customtkinter.CTk):
         self.la_id_value.configure(text=id)
         self.la_results_value.configure(text=results)
 
-
-
+        print(self.exams[self.curr_exam].identifier.confirmed_identifier)
+        print(self.exams[self.curr_exam].result.confirmed)
 
 
 

@@ -71,15 +71,18 @@ def loadExams():
 
     return exams
 
-
+def exportExams(exams):
+    with open("exam_export.json", "w") as file:
+        json.dump(exams, file)
+        file.close()
 
 def start():
     exams = loadExams()
-    gui = TkinterApp.App(exams)
 
+    gui = TkinterApp.App(exams)
     gui.mainloop()
 
-
+    #exportExams(exams)
 
 if __name__ == '__main__':
     start()
