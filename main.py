@@ -16,6 +16,7 @@ def loadExams():
     except FileNotFoundError as e:
         tkinter.messagebox.showerror(title="Error", message=f"File not found: {e}")
 
+
 def exportExams(exams):
     try:
         with open("Data/exam_data.json", "w") as file:
