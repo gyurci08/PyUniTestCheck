@@ -102,7 +102,11 @@ def start():
     gui = TkinterApp.App(exams)
     gui.mainloop()
 
-    exportExams(exams)
+    try:
+        exportExams(exams)
+        print("File saved.")
+    except:
+        pass
 
 if __name__ == '__main__':
     start()
