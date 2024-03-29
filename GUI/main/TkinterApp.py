@@ -133,9 +133,6 @@ class App(customtkinter.CTk):
         self.la_id_value.configure(text=id)
         self.la_results_value.configure(text=results)
 
-        print(self.exams[self.curr_exam].identifier.confirmed_identifier)
-        print(self.exams[self.curr_exam].result.confirmed)
-
 
 
 

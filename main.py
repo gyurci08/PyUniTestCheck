@@ -13,6 +13,12 @@ def compareConfirmed(orig, confirmed):
 
 
 
+def convert(lst):
+   res_dict = {}
+   for i in range(0, len(lst), 2):
+       res_dict[lst[i]] = lst[i + 1]
+   return res_dict
+
 
 @dataclass
 class Identifier:
@@ -29,6 +35,9 @@ class Identifier:
         except KeyError:
             self.confirmed_identifier = None
 
+    def serialize(self):
+        return (self.__dict__)
+
 
 @dataclass
 class Result:
@@ -44,6 +53,9 @@ class Result:
         except KeyError:
             self.confirmed = None
 
+    def serialize(self):
+        return {"original": self.original, "image": self.image, "confirmed":self.confirmed}
+
 @dataclass
 class Exam:
     identifier: Identifier
@@ -53,13 +65,20 @@ class Exam:
         self.identifier = Identifier (**exam['identifier'])
         self.result = Result (**exam['result'])
 
+    def serialize(self):
+        return {"identifier": self.identifier.serialize(), "result": self.result.serialize()}
 
 @dataclass
 class ExamList:
     list: List[Exam]
 
-    def __init__(self,  **exams):
-        self.list = [Exam (**exams[key]) for key in exams]
+    def __init__(self,  exams):
+        self.list = [Exam(**exam) for exam in exams]
+
+    def serialize(self):
+        return [dict (**item.serialize()) for item in self.list]
+
+
 
 
 def loadExams():
@@ -67,13 +86,13 @@ def loadExams():
     with open("exam_data.json", "r") as file:
         json_data = json.load(file)
         file.close()
-    exams = ExamList(**json_data)
+    exams = ExamList(json_data)
 
     return exams
 
 def exportExams(exams):
     with open("exam_export.json", "w") as file:
-        json.dump(exams, file)
+        json.dump(exams.serialize(), file)
         file.close()
 
 def start():
@@ -82,7 +101,7 @@ def start():
     gui = TkinterApp.App(exams)
     gui.mainloop()
 
-    #exportExams(exams)
+    exportExams(exams)
 
 if __name__ == '__main__':
     start()
