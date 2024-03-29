@@ -1,16 +1,20 @@
 import json
+import tkinter
 
+from tkinter import messagebox
 from GUI.main import TkinterApp
 from Repository.ExamRepository import ExamRepository
 
 
 def loadExams():
-    with open("Data/exam_data.json", "r") as file:
-        json_data = json.load(file)
-        file.close()
-    exams = ExamRepository(json_data)
-
-    return exams
+    try:
+        with open("Data/exam_data.json", "r") as file:
+            json_data = json.load(file)
+            file.close()
+        exams = ExamRepository(json_data)
+        return exams
+    except FileNotFoundError as e:
+        tkinter.messagebox.showerror(title="Error", message=f"File not found: {e}")
 
 def exportExams(exams):
     try:
@@ -19,16 +23,17 @@ def exportExams(exams):
             file.close()
         print("File saved.")
     except Exception as e:
-        print(f"Error durring save: {e}")
+        tkinter.messagebox.showerror(title="Error", message=f"Error during save: {e}")
 
 
 def start():
     exams = loadExams()
 
-    gui = TkinterApp.App(exams)
-    gui.mainloop()
+    if not exams == None:
+        gui = TkinterApp.App(exams)
+        gui.mainloop()
+        exportExams(exams)
 
-    exportExams(exams)
 
 
 
